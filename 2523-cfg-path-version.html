@@ -208,6 +208,13 @@ fn make_iter(limit: u8) -&gt; impl Iterator&lt;Item = u8&gt; {
     (0..limit).map(move |x| (x..limit)).flatten()
 }
 
+// Even better
+fn make_iter(limit: u8) -&gt; impl Iterator&lt;Item = u8&gt; {
+    #[cfg(not(accessible(::std::iter::Flatten)))]
+    use itertools::Itertools;
+    (0..limit).map(move |x| (x..limit)).flatten()
+}
+
 fn main() {
     println!(&quot;{:?}&quot;, make_iter(10).collect::&lt;Vec&lt;_&gt;&gt;());
 }
